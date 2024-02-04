@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float boundValue = 5;
     [SerializeField] HungerBar hungerBar;
     public float hungerDecreaseRate = 0.07f;
+    
 
     public float minHunger = 1;
     public float _currentHunger;
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         Move();
         CheckBoundaries();
         
