@@ -4,25 +4,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class GameOverManager : MonoBehaviour
 {
-    public Button startButton;
-    public static UIManager instance;
     public Button restartButton;
+    public GameObject player;
+    private PlayerController playerController;
     // Start is called before the first frame update
     void Start()
-    {      
-        startButton.onClick.AddListener(StartTheGame);
+    {
+        playerController = player.GetComponent<PlayerController>();
+        restartButton.onClick.AddListener(Restart);
     }
 
     // Update is called once per frame
     void Update()
     {
- 
+        
     }
-
-    public void StartTheGame()
+    void Restart()
     {
+        playerController.isRestarted = true;
         SceneManager.LoadScene(1);
     }
 }

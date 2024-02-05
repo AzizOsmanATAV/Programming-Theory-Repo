@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,12 +11,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float boundValue = 5;
     [SerializeField] HungerBar hungerBar;
     public float hungerDecreaseRate = 0.07f;
-    
-
+    public bool isRestarted;
+    public static PlayerController instance;
     public float minHunger = 1;
     public float _currentHunger;
     public float currentHunger
-        
     {
         get { return _currentHunger; }
         set
@@ -27,14 +27,13 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                
+
             }
         }
 
         //Encapsulation
+
     }
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -47,29 +46,43 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         Move();
         CheckBoundaries();
-        
+
         hungerBar.UpdateHungerBar(minHunger, _currentHunger);
+
+        if (_currentHunger <= 0)
+        {
+            GameOver();
+            
+        }
+
+        if (isRestarted)
+        {
+            _currentHunger = 1;
+            isRestarted = false;
+        }
     }
 
     void Move()
     {
-        //Abstraction
+
         horizontalInput = Input.GetAxis("Horizontal");
         transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
         DecreaseHunger();
+
+
     }
 
     void CheckBoundaries()
     {
-        
-        if(transform.position.x < -boundValue)
+
+        if (transform.position.x < -boundValue)
         {
             transform.position = new Vector3(-boundValue, transform.position.y, transform.position.z);
         }
-        if(transform.position.x > boundValue)
+        if (transform.position.x > boundValue)
         {
             transform.position = new Vector3(boundValue, transform.position.y, transform.position.z);
         }
@@ -89,5 +102,13 @@ public class PlayerController : MonoBehaviour
     {
         _currentHunger -= hungerDecreaseRate * Time.deltaTime;
     }
-   
+
+
+
+    public void GameOver()
+    {
+
+        SceneManager.LoadScene(2);
+    }
+
 }
